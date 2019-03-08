@@ -37,9 +37,18 @@ void play_game()
 	char mark = 'X';
 	int choice = 0;
 	int game_won = 0;
+	int player_moves[9];
+	int player_move_index = 0;
+	struct player_moves all_moves[9];
+	int redo_moves[9];
+	int redo_moves_index;
+	int undo_index = 1;
+	struct player_moves last_move;
 
 	do
 	{
+		int legal_move = 1;
+
 		if (player_turn == 0)
 		{
 			strcpy(player_name, player1_name);
@@ -58,7 +67,7 @@ void play_game()
 		scanf("%d", &choice);
 
 		if (choice == 1 && board[1] == '1') { board[1] = mark; }
-		else if (choice == 2 && board[2] == '2') { board[2] = mark; }
+		else if (choice == 2 && board[2] == '2') {board[2] = mark;}
 		else if (choice == 3 && board[3] == '3') { board[3] = mark; }
 		else if (choice == 4 && board[4] == '4') { board[4] = mark; }
 		else if (choice == 5 && board[5] == '5') { board[5] = mark; }
@@ -66,9 +75,32 @@ void play_game()
 		else if (choice == 7 && board[7] == '7') { board[7] = mark; }
 		else if (choice == 8 && board[8] == '8') { board[8] = mark; }
 		else if (choice == 9 && board[9] == '9') { board[9] = mark; }
+
+
+
+		
 		else
 		{
-			printf("Invalid move!");
+			if (choice == 0)
+			{
+				if (player_move_index - undo_index >= 0)
+				{
+					board[all_moves[player_move_index - undo_index].board_index] = all_moves[player_move_index - undo_index].board_index + '0';
+					undo_index++;
+					draw_board();
+				}
+				else
+				{
+					printf("no moves left to undo!");
+				}
+			
+			}
+			else
+			{
+				printf("Invalid move!");
+			}
+
+		
 			if (player_turn == 0)
 			{
 				player_turn = 1;
@@ -80,7 +112,16 @@ void play_game()
 			getch();
 
 			choice = 0;
+			legal_move = 0;
 
+		}
+
+		if (legal_move == 1) 
+		{
+			last_move.board_index = choice;
+			last_move.letter = board[choice];
+			all_moves[player_move_index] = last_move;
+			player_move_index++;
 		}
 
 		game_won = check_win();
@@ -90,7 +131,7 @@ void play_game()
 
 	if (game_won == 1)
 	{
-		printf("\t\t%s, game is Won!", player_name);
+		printf("\t\t%s won the game!\n\\n", player_name);
 	}
 
 
@@ -102,12 +143,14 @@ void play_game()
 
 void new_name()
 {
+
+	get_player_names();
+	system("cls");
 	for (int i = 0; i < 10; i++)
 	{
 
 		board[i] = i + '0';
 	}
-	get_player_names();
 	draw_board();
 	play_game();
 }
@@ -170,14 +213,15 @@ int check_win()
 
 void main()
 {
-	int play_again = 0;
-	do
+	int play_again = 1;
+	
+	while (play_again == 1)
 	{
 		new_name();
+
 		printf("Enter 1 to play again.");
-		scanf("%d", play_again);
-
-	} while (play_again == 0);
-
+		scanf("%d", &play_again);
+		fseek(stdin, 0, SEEK_END);
+	}
 
 }
