@@ -100,7 +100,7 @@ void play_game()
 
 }
 
-void new_name()
+void new_game()
 {
 	for (int i = 0; i < 10; i++)
 	{
@@ -173,7 +173,7 @@ void main()
 	int play_again = 0;
 	do
 	{
-		new_name();
+		new_game();
 		printf("Enter 1 to play again.");
 		scanf("%d", play_again);
 

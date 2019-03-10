@@ -8,5 +8,5 @@ struct winCount
 
 void draw_board();
 void play_game();
-void new_name();
+void new_game();
 void get_player_names();
