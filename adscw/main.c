@@ -28,6 +28,7 @@ void  main(void)
 	printf(" Make A slection:  ");
 
 	scanf("%d", &selection);
+	char name[25] = "zasszz";
 
 	//detecting user selection
 	switch (selection)
@@ -36,7 +37,7 @@ void  main(void)
 		pvp_mode();
 		break;
 	case 2:
-		printf("Launch pve mode");
+		pve_mode();
 		break;
 	case 3:
 		printf("Launch Replays");
@@ -45,7 +46,7 @@ void  main(void)
 		printf("Launch scoreboard");
 		break;
 	case 5:
-		printf("Exit");
+		leaderboard(name);
 		break;
 	default:
 		printf("Invalid Selection.");
@@ -144,43 +145,33 @@ int check_win()
 		* 0 = Game Still in Progress
 		*
 	*/
-		if (board[1] == board[2] && board[2] == board[3])
-			return 1;
+	if (board[1] == board[2] && board[2] == board[3] || board[4] == board[5] && board[5] == board[6] || board[7] == board[8] && board[8] == board[9] ||
+		board[1] == board[4] && board[4] == board[7] || board[2] == board[5] && board[5] == board[8] || board[2] == board[5] && board[5] == board[8] ||
+		board[3] == board[6] && board[6] == board[9] || board[1] == board[5] && board[5] == board[9] || board[3] == board[5] && board[5] == board[7])
+	{
 
-		else if (board[4] == board[5] && board[5] == board[6])
-			return 1;
+		return 1;
 
-		else if (board[7] == board[8] && board[8] == board[9])
-			return 1;
+	}
 
-		else if (board[1] == board[4] && board[4] == board[7])
-			return 1;
-
-		else if (board[2] == board[5] && board[5] == board[8])
-			return 1;
-
-		else if (board[3] == board[6] && board[6] == board[9])
-			return 1;
-
-		else if (board[1] == board[5] && board[5] == board[9])
-			return 1;
-
-		else if (board[3] == board[5] && board[5] == board[7])
-			return 1;
-
-		else if (board[1] != '1' && board[2] != '2' && board[3] != '3' &&
-			board[4] != '4' && board[5] != '5' && board[6] != '6' && board[7]
-			!= '7' && board[8] != '8' && board[9] != '9')
-
-			return 2;
-		else
-			return  0;
+	else if (board[1] != '1' && board[2] != '2' && board[3] != '3' &&
+		board[4] != '4' && board[5] != '5' && board[6] != '6' && board[7]
+		!= '7' && board[8] != '8' && board[9] != '9')
+	{
+		return 2;
+	}
+	else
+	{
+		return  0;
+	}
+			
 
 }
 
 
 void pvp_mode()
 {
+	fseek(stdin, 0, SEEK_END);
 	new_board();
 	get_player_names();
 	draw_board();
@@ -198,6 +189,7 @@ void pvp_mode()
 
 	while (game_won == 0)
 	{
+		system("cls");
 		printf("%s, Enter board index, 0 to undo, 11 to redo: ", player);
 		int choice;
 		scanf("%d", &choice);
@@ -277,5 +269,112 @@ void pvp_mode()
 		}
 
 
+
 	}
+}
+
+
+void pve_mode()
+{
+	fseek(stdin, 0, SEEK_END);
+	new_board();
+	printf("Enter your name: ");
+	scanf("%s", &player1);
+	strcpy(player2, "Computer");
+	draw_board();
+	strtok(player1, "/n");
+
+	int gamewon = 0;
+	int turn = 1;
+
+	while (gamewon == 0)
+	{
+		fseek(stdin, 0, SEEK_END);
+		system("cls");
+		draw_board();
+		int choice;
+		printf("Enter board Index: ");
+		
+
+		if (turn == 1)
+		{
+			scanf("%d", &choice);
+		}
+		else
+		{
+			choice = computer_move();
+		}
+		int valid_move = valid_move_checker(choice);
+		if(valid_move == 1)
+		{
+
+			if (turn == 1)
+			{
+				board[choice] = 'X';
+				turn = 2;
+				draw_board();
+			}
+			else if(turn == 2)
+			{
+				board[choice] = 'O';
+				turn = 1;
+				draw_board();
+			}
+			
+		}
+		else
+		{
+			printf("Invalid move!");
+			getch();
+		}
+
+
+		int win = check_win();
+
+		if (win == 1)
+		{
+			printf("%s won the game!", player1);
+			gamewon = 1;
+			break;
+		}
+		else if (win == 2)
+		{
+			printf("Draw!", player2);
+			break;
+			getch();
+		}
+
+		
+	}
+	
+
+}
+
+int computer_move()
+{
+	int computer_choice;
+	int valid_move = 0;
+	while (valid_move == 0)
+	{
+		computer_choice = (rand() % 8) + 1;
+		if (board[computer_choice] == computer_choice +'0')
+		{
+			return computer_choice;
+		}
+	}
+}
+void leaderboard(char name[25]) 
+{
+	FILE* File_Editor;
+	File_Editor = fopen("leaderboard.txt", "r");
+	char line[100];
+	if (!File_Editor == NULL) 
+	{
+		while (fgets(line, sizeof(line), File_Editor)) {
+			
+		}
+	}
+
+
+
 }
