@@ -139,9 +139,7 @@ int valid_move_checker(int choice)
 
 int check_win()
 {
-
-CONDITIONS:
-	/* = Game Won
+	/*  * 1 = Game Won
 		* 2 = Game draw
 		* 0 = Game Still in Progress
 		*
@@ -204,14 +202,78 @@ void pvp_mode()
 		int choice;
 		scanf("%d", &choice);
 		int valid_move  = valid_move_checker(choice);
+
+		//if the player makes a valid move on the board
 		if (valid_move == 1) 
 		{
 			moves[moves_index].board_move = choice;
 			moves[moves_index].mark = mark;
-			strcpy(player, moves[moves_index].player_name);
+			strcpy(moves[moves_index].player_name, &player);
+			
 			moves_index++;
 			board[choice] = mark;
 			draw_board();
+			int win = check_win();
+			if (win == 1)
+			{
+				system("cls");
+				draw_board();
+				printf("%s won the game!", &player);
+				break;
+
+			}
+			if (win == 2)
+			{
+				system("cls");
+				draw_board();
+				printf("Draw!");
+				break;
+
+			}
+			else
+			{
+				if (player_indx == 1)
+				{
+					mark = 'O';
+					strcpy(player, player2);
+					player_indx = 2;
+				}
+				else 
+				{
+					mark = 'X';
+					strcpy(player, player1);
+					player_indx = 1;
+				}
+			}
+		}
+
+		//if the user undo's the last move
+		if (valid_move == 0)
+		{
+			if (moves_index > 0)
+			{
+				moves_index--;
+				board[moves[moves_index].board_move] = moves[moves_index].board_move + '0';
+				draw_board();
+			}
+			else
+			{
+				printf("\nNo moves left to redo!\n");
+			}
+		}
+		if (valid_move == 11)
+		{
+			char temp_mark = moves[moves_index].mark;
+			if(temp_mark == 'X' || temp_mark == 'O')
+			{
+				board[moves[moves_index].board_move] = temp_mark;
+				moves_index++;
+				draw_board();
+			}
+			else
+			{
+				printf("\nNo moves Left to redo!\n");
+			}
 		}
 
 
