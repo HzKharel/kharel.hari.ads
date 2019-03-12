@@ -1,18 +1,12 @@
 #pragma once
 
-struct winCount
-{
-	char name[15];
-	int win_count;
-};
-
-struct player_moves
-{
-	char letter;
-	int board_index;
-};
-
+void pvp_mode();
 void draw_board();
-void play_game();
-void new_game();
 void get_player_names();
+void new_board();
+int valid_move_checker(int choice);
+struct game_moves {
+	int board_move;
+	char player_name[25];
+	char mark;
+};

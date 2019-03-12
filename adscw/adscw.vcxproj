@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="old.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />

@@ -5,16 +5,69 @@
 #include "Header.h"
 
 
-void get_player_names();
-char board[10];
-char player1_name[15];
-char player2_name[15];
+//global variables
+char player1[25], player2[25], board[9];
 
-void draw_board() {
+
+//main entry point for the game
+void  main(void)
+{
+	//clearing stream
+	fseek(stdin, 0, SEEK_END);
+	int selection = 0;
+
+	//populating the main menu
+
+	printf("Tic Tac Toe - ADS Coursework - Hari Kharel - 40312824. Edinburgh Napier University\n\n\n");
+	printf("====== MAIN MENU ======\n\n");
+	printf(" 1) Plaver v Player \n");
+	printf(" 2) Plaver v Computer \n");
+	printf(" 3) Match Replays \n");
+	printf(" 4) Scoreboard \n");
+	printf(" 5) Exit \n\n\n\n");
+	printf(" Make A slection:  ");
+
+	scanf("%d", &selection);
+
+	//detecting user selection
+	switch (selection)
+	{
+	case 1:
+		pvp_mode();
+		break;
+	case 2:
+		printf("Launch pve mode");
+		break;
+	case 3:
+		printf("Launch Replays");
+		break;
+	case 4:
+		printf("Launch scoreboard");
+		break;
+	case 5:
+		printf("Exit");
+		break;
+	default:
+		printf("Invalid Selection.");
+
+		break;
+	}
+	//recursive function
+	getch();
+	system("cls\n\n");
+	main();
+}
+
+
+//function to display the game board and the moves on the command line
+void draw_board()
+{
 	//clear previous draws
 	system("cls");
-	printf("\n\n\t\tTic Tac Toe - ADS\n\n");
-	printf("\t\t%s (X)  - %s (O)\n\n\n", player1_name, player2_name);
+
+	//printing the board
+	printf("\n\n\tTic Tac Toe - ADS\n\n");
+	printf("\t\t%s (X)  - %s (O)\n\n\n", player1, player2);
 	printf("\t        |       |  \n");
 	printf("\t    %c   |   %c   |   %c\n", board[1], board[2], board[3]);
 	printf("\t        |       |  \n");
@@ -26,158 +79,141 @@ void draw_board() {
 	printf("\t        |       |  \n");
 	printf("\t    %c   |   %c   |   %c\n", board[7], board[8], board[9]);
 	printf("\t        |       |  \n");
-}
-
-
-
-void play_game()
-{
-	int player_turn = 0;
-	char player_name[25];
-	char mark = 'X';
-	int choice = 0;
-	int game_won = 0;
-
-	do
-	{
-		if (player_turn == 0)
-		{
-			strcpy(player_name, player1_name);
-			mark = 'X';
-			player_turn = 1;
-
-		}
-		else
-		{
-			strcpy(player_name, player2_name);
-			mark = 'O';
-			player_turn = 0;
-		}
-
-		printf("%s Enter grid number, or 0 to undo the last move: ", player_name);
-		scanf("%d", &choice);
-
-		if (choice == 1 && board[1] == '1') { board[1] = mark; }
-		else if (choice == 2 && board[2] == '2') { board[2] = mark; }
-		else if (choice == 3 && board[3] == '3') { board[3] = mark; }
-		else if (choice == 4 && board[4] == '4') { board[4] = mark; }
-		else if (choice == 5 && board[5] == '5') { board[5] = mark; }
-		else if (choice == 6 && board[6] == '6') { board[6] = mark; }
-		else if (choice == 7 && board[7] == '7') { board[7] = mark; }
-		else if (choice == 8 && board[8] == '8') { board[8] = mark; }
-		else if (choice == 9 && board[9] == '9') { board[9] = mark; }
-		else
-		{
-			printf("Invalid move!");
-			if (player_turn == 0)
-			{
-				player_turn = 1;
-			}
-			else
-			{
-				player_turn = 0;
-			}
-			getch();
-
-			choice = 0;
-
-		}
-
-		game_won = check_win();
-		draw_board();
-
-	} while (game_won == 0);
-
-	if (game_won == 1)
-	{
-		printf("\t\t%s, game is Won!", player_name);
-	}
-
-
-	getch();
-
-	return 0;
 
 }
 
-void new_game()
+//function to create a new, empty board
+void new_board()
 {
-	for (int i = 0; i < 10; i++)
-	{
-
+	for (int i = 1; i < 10; i++) {
 		board[i] = i + '0';
 	}
-	get_player_names();
-	draw_board();
-	play_game();
+	return board;
 }
 
-
+//function to get the player names
 void get_player_names()
 {
+	static char players[2][25];
 
-	printf("Enter Player 1 Name: ");
-	fgets(player1_name, 25, stdin);
-	strtok(player1_name, "\n");
-	printf("Enter Player 2 Name: ");
-	fgets(player2_name, 25, stdin);
-	strtok(player2_name, "\n");
 
+	printf("Player 1 Name: ");
+	scanf("%s", &player1);
+	strtok(players[0], "/n");
+
+	printf("Player 2 Name: ");
+	scanf("%s", &player2);
+	strtok(players[1], "/n");
+
+	//clearing stream
+	fseek(stdin, 0, SEEK_END);
+}
+
+int valid_move_checker(int choice)
+{
+	/*
+		1 = Valid Move
+		0 = Undo
+		11 = Redo
+		-1 = Invalid move
+	*/
+	if (choice == 1 && board[1] == '1' || choice == 2 && board[2] == '2' || choice == 3 && board[3] == '3' || choice == 4 && board[4] == '4' || choice == 5 && board[5] == '5' || 
+		choice == 6 && board[6] == '6' || choice == 7 && board[7] == '7' || choice == 8 && board[8] == '8' || choice == 9 && board[9] == '9')
+	{
+		return 1;
+	}
+
+	else if (choice == 0)
+	{
+		return 0;
+	}
+	else if (choice == 11)
+	{
+		return  11;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 int check_win()
 {
 
-	/*  CONDITIONS:
-	*   1 = Game Won
-	*   2 = Game draw
-	*   0 = Game Still in Progress
-	*
+CONDITIONS:
+	/* = Game Won
+		* 2 = Game draw
+		* 0 = Game Still in Progress
+		*
 	*/
-	if (board[1] == board[2] && board[2] == board[3])
-		return 1;
+		if (board[1] == board[2] && board[2] == board[3])
+			return 1;
 
-	else if (board[4] == board[5] && board[5] == board[6])
-		return 1;
+		else if (board[4] == board[5] && board[5] == board[6])
+			return 1;
 
-	else if (board[7] == board[8] && board[8] == board[9])
-		return 1;
+		else if (board[7] == board[8] && board[8] == board[9])
+			return 1;
 
-	else if (board[1] == board[4] && board[4] == board[7])
-		return 1;
+		else if (board[1] == board[4] && board[4] == board[7])
+			return 1;
 
-	else if (board[2] == board[5] && board[5] == board[8])
-		return 1;
+		else if (board[2] == board[5] && board[5] == board[8])
+			return 1;
 
-	else if (board[3] == board[6] && board[6] == board[9])
-		return 1;
+		else if (board[3] == board[6] && board[6] == board[9])
+			return 1;
 
-	else if (board[1] == board[5] && board[5] == board[9])
-		return 1;
+		else if (board[1] == board[5] && board[5] == board[9])
+			return 1;
 
-	else if (board[3] == board[5] && board[5] == board[7])
-		return 1;
+		else if (board[3] == board[5] && board[5] == board[7])
+			return 1;
 
-	else if (board[1] != '1' && board[2] != '2' && board[3] != '3' &&
-		board[4] != '4' && board[5] != '5' && board[6] != '6' && board[7]
-		!= '7' && board[8] != '8' && board[9] != '9')
+		else if (board[1] != '1' && board[2] != '2' && board[3] != '3' &&
+			board[4] != '4' && board[5] != '5' && board[6] != '6' && board[7]
+			!= '7' && board[8] != '8' && board[9] != '9')
 
-		return 2;
-	else
-		return  0;
+			return 2;
+		else
+			return  0;
 
 }
 
-void main()
+
+void pvp_mode()
 {
-	int play_again = 0;
-	do
+	new_board();
+	get_player_names();
+	draw_board();
+
+	//function variables
+	int game_won = 0;
+	int player_indx = 1;
+	char mark = 'X';
+	char player[25];
+	struct game_moves moves[9];
+	int moves_index = 0;
+
+
+	strcpy(player, player1);
+
+	while (game_won == 0)
 	{
-		new_game();
-		printf("Enter 1 to play again.");
-		scanf("%d", play_again);
+		printf("%s, Enter board index, 0 to undo, 11 to redo: ", player);
+		int choice;
+		scanf("%d", &choice);
+		int valid_move  = valid_move_checker(choice);
+		if (valid_move == 1) 
+		{
+			moves[moves_index].board_move = choice;
+			moves[moves_index].mark = mark;
+			strcpy(player, moves[moves_index].player_name);
+			moves_index++;
+			board[choice] = mark;
+			draw_board();
+		}
 
-	} while (play_again == 0);
 
-
+	}
 }
