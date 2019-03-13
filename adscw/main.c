@@ -189,7 +189,9 @@ void pvp_mode()
 
 	while (game_won == 0)
 	{
+		fseek(stdin, 0, SEEK_END);
 		system("cls");
+		draw_board();
 		printf("%s, Enter board index, 0 to undo, 11 to redo: ", player);
 		int choice;
 		scanf("%d", &choice);
@@ -267,6 +269,10 @@ void pvp_mode()
 				printf("\nNo moves Left to redo!\n");
 			}
 		}
+		else {
+			printf("Invalid Move!");
+			getch();
+		}
 
 
 
@@ -281,6 +287,7 @@ void pve_mode()
 	printf("Enter your name: ");
 	scanf("%s", &player1);
 	strcpy(player2, "Computer");
+	char current_player[25];
 	draw_board();
 	strtok(player1, "/n");
 
@@ -313,12 +320,38 @@ void pve_mode()
 				board[choice] = 'X';
 				turn = 2;
 				draw_board();
+				int win = check_win();
+				if (win == 1)
+				{
+					printf("%s won the game!", player1);
+					gamewon = 1;
+					break;
+				}
+				else if (win == 2)
+				{
+					printf("Draw!");
+					break;
+					getch();
+				}
 			}
 			else if(turn == 2)
 			{
 				board[choice] = 'O';
 				turn = 1;
 				draw_board();
+				int win = check_win();
+				if (win == 1)
+				{
+					printf("Computer won the game!");
+					gamewon = 1;
+					break;
+				}
+				else if (win == 2)
+				{
+					printf("Draw!");
+					break;
+					getch();
+				}
 			}
 			
 		}
@@ -327,23 +360,6 @@ void pve_mode()
 			printf("Invalid move!");
 			getch();
 		}
-
-
-		int win = check_win();
-
-		if (win == 1)
-		{
-			printf("%s won the game!", player1);
-			gamewon = 1;
-			break;
-		}
-		else if (win == 2)
-		{
-			printf("Draw!", player2);
-			break;
-			getch();
-		}
-
 		
 	}
 	
