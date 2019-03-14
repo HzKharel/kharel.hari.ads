@@ -13,18 +13,35 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Report">
+      <UniqueIdentifier>{4d9d7fb1-eb03-45cd-8708-bbc264e54be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b4cfe051-62ad-4084-9c1a-f64863e0fd7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Executable">
+      <UniqueIdentifier>{cf327e59-bda6-42b0-bf98-503003abb565}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="old.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\report.pdf">
+      <Filter>Report</Filter>
+    </None>
+    <None Include="..\..\..\..\Desktop\My Files\kharel_hari_ads\main.exe">
+      <Filter>Executable</Filter>
+    </None>
   </ItemGroup>
 </Project>
