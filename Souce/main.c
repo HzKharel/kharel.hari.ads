@@ -61,7 +61,9 @@ void  main(void)
 		print_leaderboard();
 		break;
 	case 5:
-		printf("Exit.\n");
+		printf("Press Any Key to Exit.\n");
+		getch();
+		exit(0);
 		break;
 	default:
 		printf("Invalid Selection.");
@@ -83,7 +85,7 @@ void draw_board()
 
 	//printing the board
 	printf("\n\n\tTic Tac Toe - ADS\n\n");
-	printf("\t\t%s (X)  - %s (O)\n\n\n", player1, player2);
+	printf("\t%s (X)  - %s (O)\n\n\n", player1, player2);
 	printf("\t        |       |  \n");
 	printf("\t    %c   |   %c   |   %c\n", board[1], board[2], board[3]);
 	printf("\t        |       |  \n");
@@ -105,7 +107,6 @@ void new_board()
 	for (int i = 1; i < 10; i++) {
 		board[i] = i + '0';
 	}
-	return board;
 }
 
 //function to get the player names
@@ -336,6 +337,8 @@ int get_free_replay_index()
 		}
 	}
 
+	return NULL;
+
 }
 //a method that adds the game to the replay array, takes in a game struct
 void add_to_replay(struct game_moves moves[9])
@@ -459,6 +462,7 @@ int computer_move()
 			return computer_choice;
 		}
 	}
+	return NULL;
 }
 
 //called after each game, adds the results from the game to the leaderboard. Tracks wins, losses and total games
@@ -516,7 +520,7 @@ void add_to_leaderboard(char name[25], int win, int loss)
 void print_leaderboard()
 {
 	system("cls");
-	printf("Name \t\t Wins \t Losses \t Total\n\n");
+	printf("Name \t\t\t Wins \t Losses \t Total\n\n");
 	for (int i = 0; i < 100; i++) {
 		//checking to see of the leaderboard entry is populated
 		if (strcmp(leaderboard_array[i].name, "") == 1) {
