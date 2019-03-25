@@ -520,7 +520,7 @@ void add_to_leaderboard(char name[25], int win, int loss)
 void print_leaderboard()
 {
 	system("cls");
-	printf("Name \t\t\t Wins \t Losses \t Total\n\n");
+	printf("Name \t\t Wins \t Losses \t Total\n\n");
 	for (int i = 0; i < 100; i++) {
 		//checking to see of the leaderboard entry is populated
 		if (strcmp(leaderboard_array[i].name, "") == 1) {
